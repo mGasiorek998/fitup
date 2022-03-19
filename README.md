@@ -9,6 +9,7 @@ Zaliczenie
 - In progress
   - Tworzenie brancha: FU:#numer_id_ticketa-nazwa-ticketa
   - Pisanie kodu
+  - Nazewnictwo commitów: Nazwa brancha: Commit Message
   - Pisanie testów
   - Stworzenie Pull requresta
   - Podpięcie PR do ticketa
