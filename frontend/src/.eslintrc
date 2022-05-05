@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "nestjs/parse-int-pipe": "off",
+    "nestjs/deprecated-api-modules": "off",
+    "nestjs/use-dependency-injection": "off",
+    "nestjs/use-validation-pipe": "off"
+  }
+}
