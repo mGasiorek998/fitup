@@ -8,6 +8,10 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
   }
+
+  body {
+    background-color: '#EEE';
+  }
 `;
 
 export default GlobalStyles;
