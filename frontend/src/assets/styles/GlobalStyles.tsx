@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
 
   main {
     background-color: ${({ theme }) => theme.colors.lightGray}
-ś  }
+  }
 `;
 
 export default GlobalStyles;
