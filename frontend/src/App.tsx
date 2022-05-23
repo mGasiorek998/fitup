@@ -1,22 +1,7 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import MainTemplate from 'components/templates/MainTemplate/MainTemplate';
 
 function App() {
-  const [greetings] = useState('Hello World!!');
-
-  const Wrapper = styled.div`
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `;
-
-  return (
-    <Wrapper>
-      <h1>{greetings}</h1>
-    </Wrapper>
-  );
+  return <MainTemplate>Hello There</MainTemplate>;
 }
 
 export default App;
