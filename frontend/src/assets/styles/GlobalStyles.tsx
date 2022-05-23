@@ -9,9 +9,9 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  body {
-    background-color: '#EEE';
-  }
+  main {
+    background-color: ${({ theme }) => theme.colors.lightGray}
+ś  }
 `;
 
 export default GlobalStyles;
