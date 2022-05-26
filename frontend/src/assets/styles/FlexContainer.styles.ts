@@ -7,7 +7,8 @@ interface StyledFlexWrapperProps {
     | 'flex-end'
     | 'center'
     | 'stretch'
-    | 'space-evenly';
+    | 'space-evenly'
+    | 'space-between';
   flexDirection?: 'column' | 'row';
 }
 export const StyledFlexWrapper = styled.div<StyledFlexWrapperProps>`

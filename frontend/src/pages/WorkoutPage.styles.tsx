@@ -5,11 +5,16 @@ export const StyledSection = styled.section`
   margin: 4rem 0;
 `;
 
-export const StyledCard = styled(Card)`
+interface StyledCardProps {
+  contentPos?: string;
+  display?: string;
+}
+export const StyledCard = styled(Card)<StyledCardProps>`
   min-height: 90vh;
-  display: flex;
+  display: ${({ display }) => (display === 'block' ? 'block' : 'flex')};
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: ${({ contentPos }) =>
+    contentPos === 'start' ? 'flex-start' : 'space-evenly'};
   align-items: center;
 `;
 
