@@ -1,38 +1,34 @@
-import {Controller, Get, Post, Delete, Patch, Param} from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
-import {MealsService} from "./meals.service";
+import { MealsService } from './meals.service';
 
 @Controller('meals')
 export class MealsController {
-
-  constructor(
-    private readonly mealsService: MealsService,
-  ) {}
-
+  constructor(private readonly mealsService: MealsService) {}
 
   @Get()
-  getAllMeals(): string {
-    return 'list of all meals goes here'
+  getAllMeals(): any {
+    return this.mealsService.findAll();
   }
 
   @Get(':id')
   getSingleMeal(@Param('id') id: string): string {
-    console.log(id)
-    return id
+    console.log(id);
+    return id;
   }
 
   @Post()
-  addMeal(): string {
-    return 'create new meal!'
+  addMeal(): any {
+    return this.mealsService.createMeal();
   }
 
   @Patch()
   updateMeal(): string {
-    return 'update meal!'
+    return 'update meal!';
   }
 
   @Delete()
   removeMeal(): string {
-    return 'remove meal'
+    return 'remove meal';
   }
 }
