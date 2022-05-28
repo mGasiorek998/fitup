@@ -10,7 +10,8 @@ interface StyledCardProps {
   display?: string;
 }
 export const StyledCard = styled(Card)<StyledCardProps>`
-  min-height: 90vh;
+  height: 80vh;
+  overflow-x: scroll;
   display: ${({ display }) => (display === 'block' ? 'block' : 'flex')};
   flex-direction: column;
   justify-content: ${({ contentPos }) =>

@@ -14,6 +14,7 @@ import useModal from 'hooks/useModal';
 import WorkoutList from 'components/organisms/WorkoutList/WorkoutList';
 import workoutsListMock, { Workout } from 'assets/mocks/Workouts';
 import FullWorkout from 'components/organisms/FullWorkout/FullWorkout';
+import WorkoutForm from 'components/organisms/WorkoutForm/WorkoutForm';
 
 export default function WorkoutsPage() {
   const [daySelected, setDaySelected] = useState<DayOfWeek | null>(null);
@@ -86,7 +87,7 @@ export default function WorkoutsPage() {
         </StyledSection>
       </StyledWrapper>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h1>Add workout form here</h1>
+        <WorkoutForm />
       </Modal>
     </>
   );

@@ -17,6 +17,12 @@ const Button = styled.button<ButtonProps>`
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
 
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.lightGray};
+    box-shadow: unset;
+    cursor: unset;
+  }
+
   &:hover {
     box-shadow: none;
   }

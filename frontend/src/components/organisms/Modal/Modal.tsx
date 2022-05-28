@@ -1,4 +1,5 @@
 import Overlay from 'components/atoms/Overlay/Overlay';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
@@ -20,14 +21,26 @@ const ModelWrapper = styled.div`
   border-radius: 8px;
 `;
 
+const modalContainer = document.getElementById('modalPortal');
+
 export default function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
+
+  const modalNode = document.createElement('div');
+
+  useEffect(() => {
+    modalContainer?.appendChild(modalNode);
+
+    return () => {
+      modalContainer?.removeChild(modalNode);
+    };
+  }, [modalNode]);
 
   return ReactDOM.createPortal(
     <>
       <Overlay onClick={onClose} />
       <ModelWrapper>{children}</ModelWrapper>
     </>,
-    document.getElementById('modalPortal') as Element
+    modalNode
   );
 }

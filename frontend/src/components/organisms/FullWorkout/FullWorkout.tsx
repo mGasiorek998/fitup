@@ -10,9 +10,10 @@ const StyledWrapper = styled.div`
   position: relative;
   padding: 2rem;
   min-height: inherit;
+  height: 100%;
 
   & > div {
-    min-height: 500px;
+    margin-bottom: 4rem;
   }
 
   & > h2 {
