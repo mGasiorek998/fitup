@@ -9,9 +9,13 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  body {
+    font-family: 'Lato';
+  }
+
   main {
     background-color: ${({ theme }) => theme.colors.lightGray}
-ś  }
+  }
 `;
 
 export default GlobalStyles;
