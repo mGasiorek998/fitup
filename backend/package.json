@@ -22,7 +22,9 @@
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/platform-express": "^8.0.0",
+    "class-validator": "^0.13.2",
     "mongodb": "^4.6.0",
     "prettier": "^2.6.2",
     "reflect-metadata": "^0.1.13",
