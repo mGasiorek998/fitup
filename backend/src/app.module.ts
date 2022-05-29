@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MealsModule } from './api/meals/meals.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/fitup')],
+  imports: [MealsModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })
