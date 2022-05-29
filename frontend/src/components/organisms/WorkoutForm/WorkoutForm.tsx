@@ -7,6 +7,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import workoutTypesOptions from './workoutTypesOptions';
 
+// TODO: On submit I should get whole form;
+
 type workoutTypes = 'jogging' | 'swimming' | 'weightLifting' | 'wellBeing' | '';
 
 const StyledForm = styled.form`
