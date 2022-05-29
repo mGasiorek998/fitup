@@ -2,7 +2,13 @@ import styled from 'styled-components';
 
 interface StyledFlexWrapperProps {
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
-  justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'stretch'
+    | 'space-evenly'
+    | 'space-between';
   flexDirection?: 'column' | 'row';
 }
 export const StyledFlexWrapper = styled.div<StyledFlexWrapperProps>`
