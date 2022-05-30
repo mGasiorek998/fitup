@@ -54,7 +54,9 @@ export default function FullWorkout({ workout }: FullWorkoutProps) {
           </li>
         ))}
       </ul>
-      <Button color="primary">Start</Button>
+      <Button size="large" color="primary">
+        Start
+      </Button>
     </StyledWrapper>
   );
 }

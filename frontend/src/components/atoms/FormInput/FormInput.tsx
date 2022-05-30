@@ -4,6 +4,7 @@ import React from 'react';
 interface FormInput extends React.HTMLProps<HTMLInputElement> {
   label: string;
   name?: string;
+  disabled?: boolean;
   value?: string;
   options?: { label: string; value: string }[];
   onSelectItem?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -13,6 +14,7 @@ interface FormInput extends React.HTMLProps<HTMLInputElement> {
 export default function FormInput({
   id,
   options,
+  disabled,
   type,
   name,
   value,
@@ -25,7 +27,12 @@ export default function FormInput({
     <StyledFlexWrapper flexDirection="column">
       <label htmlFor={id}>{label}</label>
       {type === 'select' ? (
-        <select name={name} value={value} onChange={onSelectItem}>
+        <select
+          disabled={disabled}
+          name={name}
+          value={value}
+          onChange={onSelectItem}
+        >
           <option value="">-</option>
           {options?.map((o, i) => (
             <option key={i} value={o.value}>
@@ -39,6 +46,7 @@ export default function FormInput({
           name={name}
           type={type}
           value={value}
+          disabled={disabled}
           onChange={onChange}
           {...props}
         />

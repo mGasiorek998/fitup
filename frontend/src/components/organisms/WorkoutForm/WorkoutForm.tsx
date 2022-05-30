@@ -30,6 +30,7 @@ export default function WorkoutForm({
   const [state, dispatch] = useReducer(reducer, workoutToEdit || initialState);
 
   const submitWorkout = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(e);
     e.preventDefault();
     console.log(state.type, { ...state, selectedDay: null });
     dispatch({
@@ -58,9 +59,10 @@ export default function WorkoutForm({
 
   return (
     <>
-      <h2>Add Workout</h2>
+      <h2>{workoutToEdit ? 'Edit' : 'Add'} Workout</h2>
       <StyledForm onSubmit={submitWorkout}>
         <FormInput
+          disabled={!!workoutToEdit}
           id="workoutName"
           label="Workout name"
           name="name"
@@ -68,6 +70,7 @@ export default function WorkoutForm({
           onChange={handleFormValuesChange}
         />
         <FormInput
+          disabled={!!workoutToEdit}
           id="workoutType"
           name="type"
           type="select"
@@ -108,7 +111,7 @@ export default function WorkoutForm({
             onFormValuesChange={handleFormValuesChange}
           />
         )}
-        <Button type="submit" color="primary">
+        <Button size="medium" type="submit" color="primary">
           {workoutToEdit ? 'Save' : 'Add'} workout
         </Button>
       </StyledForm>

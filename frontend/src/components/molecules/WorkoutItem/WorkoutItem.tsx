@@ -53,10 +53,10 @@ export default function WorkoutItem({
       <WorkoutNameWrapper>
         <h2>{workout.name}</h2>
         <WorkoutItemActionsWrapper>
-          <Button color="primary" onClick={handleSelect}>
+          <Button size="small" color="primary" onClick={handleSelect}>
             Select
           </Button>
-          <Button color="secondary" onClick={onEdit}>
+          <Button size="small" color="secondary" onClick={onEdit}>
             Edit
           </Button>
         </WorkoutItemActionsWrapper>

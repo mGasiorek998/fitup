@@ -73,7 +73,7 @@ export default function WorkoutsPage() {
               alignItems="center"
             >
               SELECT WORKOUT {daySelected && `FOR ${daySelected.toUpperCase()}`}
-              <Button color="primary" onClick={openModal}>
+              <Button size="medium" color="primary" onClick={openModal}>
                 Add Workout
               </Button>
             </StyledFlexWrapper>

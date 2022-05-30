@@ -19,6 +19,7 @@ const ModelWrapper = styled.div`
   z-index: 5;
   box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.5);
   border-radius: 8px;
+  min-width: 500px;
 `;
 
 const modalContainer = document.getElementById('modalPortal');

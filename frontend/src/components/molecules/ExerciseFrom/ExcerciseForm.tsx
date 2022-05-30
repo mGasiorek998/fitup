@@ -53,6 +53,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
       <Button
         disabled={!excercise.name || !excercise.sets || !excercise.reps}
         type="submit"
+        size="medium"
         color="primary"
         onClick={handleSubmit}
       >
