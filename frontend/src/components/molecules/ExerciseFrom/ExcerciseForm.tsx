@@ -15,7 +15,7 @@ interface ExcerciseFormProps {
 export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
   const [excercise, setExercise] = useState<Exercise>({} as Exercise);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     onSumbit(excercise);
   };
@@ -28,7 +28,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <FormInput
         type="text"
         id="excerciseName"
@@ -54,9 +54,10 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
         disabled={!excercise.name || !excercise.sets || !excercise.reps}
         type="submit"
         color="primary"
+        onClick={handleSubmit}
       >
         Add
       </Button>
-    </form>
+    </>
   );
 }

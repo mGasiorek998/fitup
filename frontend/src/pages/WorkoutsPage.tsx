@@ -87,7 +87,7 @@ export default function WorkoutsPage() {
         </StyledSection>
       </StyledWrapper>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <WorkoutForm />
+        <WorkoutForm onSubmit={closeModal} />
       </Modal>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import ExcerciseForm, { Exercise } from '../ExerciseFrom/ExcerciseForm';
@@ -11,7 +11,9 @@ const StyledExercisesList = styled.ul`
   overflow-x: scroll;
 `;
 
-export default function WeightLiftingForm() {
+export default function WeightLiftingForm({
+  onFormValuesChange,
+}: PartialFormProps) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -25,9 +27,25 @@ export default function WeightLiftingForm() {
     closeModal();
   };
 
+  useEffect(() => {
+    const event: ExercisesEvent = {
+      target: {
+        name: 'exercises',
+        value: exercises,
+      },
+    };
+
+    onFormValuesChange(event);
+  }, [exercises]);
+
   return (
     <>
-      <FormInput id="rest" name="rest" label="Rest time per exercise" />
+      <FormInput
+        id="rest"
+        name="rest"
+        label="Rest time per exercise"
+        onChange={onFormValuesChange}
+      />
       <StyledExercisesList>
         {exercises.map((e, i) => (
           <li key={i}>

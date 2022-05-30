@@ -24,8 +24,6 @@ const ModelWrapper = styled.div`
 const modalContainer = document.getElementById('modalPortal');
 
 export default function Modal({ isOpen, onClose, children }: ModalProps) {
-  if (!isOpen) return null;
-
   const modalNode = document.createElement('div');
 
   useEffect(() => {
@@ -37,10 +35,12 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   }, [modalNode]);
 
   return ReactDOM.createPortal(
-    <>
-      <Overlay onClick={onClose} />
-      <ModelWrapper>{children}</ModelWrapper>
-    </>,
+    isOpen && (
+      <>
+        <Overlay onClick={onClose} />
+        <ModelWrapper>{children}</ModelWrapper>
+      </>
+    ),
     modalNode
   );
 }

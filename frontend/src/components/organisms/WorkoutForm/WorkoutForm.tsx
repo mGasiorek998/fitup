@@ -1,15 +1,17 @@
+import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import JoggingWorkoutForm from 'components/molecules/JoggingWorkoutForm/JoggingWorkoutForm';
 import SwimmingWorkoutForm from 'components/molecules/SwimmingWorkoutForm/SwimmingWorkoutForm';
 import WeightLiftingForm from 'components/molecules/WeightLiftingForm/WeightLiftingForm';
 import WellBeingForm from 'components/molecules/WellbeingForm/WellBeingForm';
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
+import { initialState, reducer } from './WorkoutFormReducer';
 import workoutTypesOptions from './workoutTypesOptions';
 
-// TODO: On submit I should get whole form;
-
-type workoutTypes = 'jogging' | 'swimming' | 'weightLifting' | 'wellBeing' | '';
+interface WorkoutFormProps {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
 
 const StyledForm = styled.form`
   display: flex;
@@ -20,30 +22,66 @@ const StyledForm = styled.form`
   }
 `;
 
-export default function WorkoutForm() {
-  const [selectedWorkoutType, setSelectedWorkoutType] =
-    useState<workoutTypes>('');
+export default function WorkoutForm({ onSubmit }: WorkoutFormProps) {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const selectWorkoutType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedWorkoutType(event.target.value as workoutTypes);
+  const submitWorkout = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(state.type, state);
+    dispatch({
+      type: 'CLEAR_FORM',
+    });
+
+    onSubmit(e);
+  };
+
+  const handleFormValuesChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | ExercisesEvent
+  ) => {
+    const { name, value } = e.target;
+    dispatch({
+      type: 'HANDLE_INPUT_CHANGE',
+      payload: {
+        name,
+        value,
+      },
+    });
   };
 
   return (
     <>
       <h2>Add Workout</h2>
-      <StyledForm>
-        <FormInput id="workoutName" label="Workout name" />
+      <StyledForm onSubmit={submitWorkout}>
+        <FormInput
+          id="workoutName"
+          label="Workout name"
+          name="name"
+          value={state.name}
+          onChange={handleFormValuesChange}
+        />
         <FormInput
           id="workoutType"
+          name="type"
           type="select"
           label="Workout type"
           options={workoutTypesOptions}
-          onSelectItem={selectWorkoutType}
+          onSelectItem={handleFormValuesChange}
         />
-        {selectedWorkoutType === 'jogging' && <JoggingWorkoutForm />}
-        {selectedWorkoutType === 'swimming' && <SwimmingWorkoutForm />}
-        {selectedWorkoutType === 'wellBeing' && <WellBeingForm />}
-        {selectedWorkoutType === 'weightLifting' && <WeightLiftingForm />}
+        {state.type === 'jogging' && (
+          <JoggingWorkoutForm onFormValuesChange={handleFormValuesChange} />
+        )}
+        {state.type === 'swimming' && (
+          <SwimmingWorkoutForm onFormValuesChange={handleFormValuesChange} />
+        )}
+        {state.type === 'wellBeing' && (
+          <WellBeingForm onFormValuesChange={handleFormValuesChange} />
+        )}
+        {state.type === 'weightLifting' && (
+          <WeightLiftingForm onFormValuesChange={handleFormValuesChange} />
+        )}
+        <Button type="submit" color="primary">
+          Add workout
+        </Button>
       </StyledForm>
     </>
   );
