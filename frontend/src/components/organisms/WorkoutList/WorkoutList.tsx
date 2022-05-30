@@ -1,9 +1,9 @@
-import { Workout } from 'assets/mocks/Workouts';
 import WorkoutItem from 'components/molecules/WorkoutItem/WorkoutItem';
 import styled from 'styled-components';
 
 interface WorkoutListProps {
   workouts: Workout[];
+  onEditWorkout: (workout: Workout) => void;
   onSelect?: (workout: Workout) => void;
 }
 
@@ -13,11 +13,20 @@ const StyledWrapper = styled.ul`
   padding: 0 1rem;
 `;
 
-export default function WorkoutList({ workouts, onSelect }: WorkoutListProps) {
+export default function WorkoutList({
+  workouts,
+  onEditWorkout,
+  onSelect,
+}: WorkoutListProps) {
   return (
     <StyledWrapper>
-      {workouts.map((workout) => (
-        <WorkoutItem key={workout.id} workout={workout} onSelect={onSelect} />
+      {workouts.map((workout, index) => (
+        <WorkoutItem
+          key={index}
+          onEdit={() => onEditWorkout(workout)}
+          workout={workout}
+          onSelect={onSelect}
+        />
       ))}
     </StyledWrapper>
   );

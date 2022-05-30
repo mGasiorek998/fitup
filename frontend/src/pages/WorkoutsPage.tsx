@@ -12,12 +12,14 @@ import Button from 'components/atoms/Button/Button';
 import Modal from 'components/organisms/Modal/Modal';
 import useModal from 'hooks/useModal';
 import WorkoutList from 'components/organisms/WorkoutList/WorkoutList';
-import workoutsListMock, { Workout } from 'assets/mocks/Workouts';
+import workoutsListMock from 'assets/mocks/Workouts';
 import FullWorkout from 'components/organisms/FullWorkout/FullWorkout';
+import WorkoutForm from 'components/organisms/WorkoutForm/WorkoutForm';
 
 export default function WorkoutsPage() {
   const [daySelected, setDaySelected] = useState<DayOfWeek | null>(null);
   const [selectedWorkouts, setSelectedWorkouts] = useState<Workout[]>([]);
+  const [workoutToEdit, setWorkoutToEdit] = useState<Workout | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleDaySelect = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -25,9 +27,13 @@ export default function WorkoutsPage() {
 
   const handleSelectWorkout = (workout: Workout) => {
     workoutsListMock.forEach((w) => {
-      if (w.id === workout.id) w.selectedDay = daySelected;
+      if (w.name === workout.name) w.selectedDay = daySelected;
     });
-    console.log(workoutsListMock);
+  };
+
+  const handleEditWorkout = (workout: Workout) => {
+    setWorkoutToEdit(workout);
+    openModal();
   };
 
   useEffect(() => {
@@ -39,6 +45,10 @@ export default function WorkoutsPage() {
 
     setSelectedWorkouts(selectedWorkouts);
   }, [daySelected, workoutsListMock]);
+
+  useEffect(() => {
+    if (!isOpen) setWorkoutToEdit(null);
+  }, [isOpen]);
 
   return (
     <>
@@ -63,17 +73,21 @@ export default function WorkoutsPage() {
               alignItems="center"
             >
               SELECT WORKOUT {daySelected && `FOR ${daySelected.toUpperCase()}`}
-              <Button color="primary" onClick={openModal}>
+              <Button size="medium" color="primary" onClick={openModal}>
                 Add Workout
               </Button>
             </StyledFlexWrapper>
           </StyledCardHeading>
           <StyledCard contentPos="start">
             <h1>Selected</h1>
-            <WorkoutList workouts={selectedWorkouts} />
+            <WorkoutList
+              onEditWorkout={handleEditWorkout}
+              workouts={selectedWorkouts}
+            />
             <h1>All</h1>
             <WorkoutList
               workouts={workoutsListMock}
+              onEditWorkout={handleEditWorkout}
               onSelect={handleSelectWorkout}
             />
           </StyledCard>
@@ -86,7 +100,7 @@ export default function WorkoutsPage() {
         </StyledSection>
       </StyledWrapper>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h1>Add workout form here</h1>
+        <WorkoutForm workoutToEdit={workoutToEdit} onSubmit={closeModal} />
       </Modal>
     </>
   );

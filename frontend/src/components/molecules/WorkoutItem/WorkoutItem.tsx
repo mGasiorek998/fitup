@@ -1,9 +1,9 @@
-import { Workout } from 'assets/mocks/Workouts';
 import Button from 'components/atoms/Button/Button';
 import styled from 'styled-components';
 
 interface WorkoutItemProps {
   workout: Workout;
+  onEdit: () => void;
   onSelect?: (workout: Workout) => void;
 }
 
@@ -39,7 +39,11 @@ const WorkoutItemActionsWrapper = styled.div`
   }
 `;
 
-export default function WorkoutItem({ workout, onSelect }: WorkoutItemProps) {
+export default function WorkoutItem({
+  workout,
+  onEdit,
+  onSelect,
+}: WorkoutItemProps) {
   const handleSelect = () => {
     onSelect?.(workout);
   };
@@ -49,14 +53,16 @@ export default function WorkoutItem({ workout, onSelect }: WorkoutItemProps) {
       <WorkoutNameWrapper>
         <h2>{workout.name}</h2>
         <WorkoutItemActionsWrapper>
-          <Button color="primary" onClick={handleSelect}>
+          <Button size="small" color="primary" onClick={handleSelect}>
             Select
           </Button>
-          <Button color="secondary">Edit</Button>
+          <Button size="small" color="secondary" onClick={onEdit}>
+            Edit
+          </Button>
         </WorkoutItemActionsWrapper>
       </WorkoutNameWrapper>
       <WorkoutDetails>
-        <p>Total excercises: {workout.excercises.length}</p>
+        <p>Total exercises: {workout.exercises?.length}</p>
         <p>{workout.warmupTime} min warm up</p>
       </WorkoutDetails>
     </StyledWrapper>
