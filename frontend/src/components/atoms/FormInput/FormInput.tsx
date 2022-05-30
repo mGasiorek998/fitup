@@ -25,7 +25,7 @@ export default function FormInput({
     <StyledFlexWrapper flexDirection="column">
       <label htmlFor={id}>{label}</label>
       {type === 'select' ? (
-        <select name={name} onChange={onSelectItem}>
+        <select name={name} value={value} onChange={onSelectItem}>
           <option value="">-</option>
           {options?.map((o, i) => (
             <option key={i} value={o.value}>

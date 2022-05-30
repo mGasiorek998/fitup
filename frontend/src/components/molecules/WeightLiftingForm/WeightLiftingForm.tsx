@@ -12,6 +12,7 @@ const StyledExercisesList = styled.ul`
 `;
 
 export default function WeightLiftingForm({
+  defaultValues,
   onFormValuesChange,
 }: PartialFormProps) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -38,12 +39,17 @@ export default function WeightLiftingForm({
     onFormValuesChange(event);
   }, [exercises]);
 
+  useEffect(() => {
+    if (defaultValues?.exercises) setExercises(defaultValues?.exercises);
+  }, []);
+
   return (
     <>
       <FormInput
         id="rest"
         name="rest"
         label="Rest time per exercise"
+        value={defaultValues?.rest ? `${defaultValues.rest}` : ''}
         onChange={onFormValuesChange}
       />
       <StyledExercisesList>

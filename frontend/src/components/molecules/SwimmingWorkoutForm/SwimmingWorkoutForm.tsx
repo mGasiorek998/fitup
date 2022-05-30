@@ -2,6 +2,7 @@ import FormInput from 'components/atoms/FormInput/FormInput';
 import swimmingStyleOptions from './swimmingStyleOptions';
 
 export default function SwimmingWorkoutForm({
+  defaultValues,
   onFormValuesChange,
 }: PartialFormProps) {
   return (
@@ -11,6 +12,7 @@ export default function SwimmingWorkoutForm({
         name="style"
         label="Swimming style"
         type="select"
+        value={defaultValues?.style ? defaultValues?.style : ''}
         options={swimmingStyleOptions}
         onSelectItem={onFormValuesChange}
       />
@@ -19,6 +21,7 @@ export default function SwimmingWorkoutForm({
         name="pools"
         type="number"
         label="Pools count"
+        value={defaultValues?.pools ? `${defaultValues?.pools}` : ''}
         onChange={onFormValuesChange}
       />
       <FormInput
@@ -26,6 +29,7 @@ export default function SwimmingWorkoutForm({
         name="rest"
         type="number"
         label="Rest after pools"
+        value={defaultValues?.rest ? `${defaultValues?.rest}` : ''}
         onChange={onFormValuesChange}
       />
     </>

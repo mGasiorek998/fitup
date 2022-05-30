@@ -1,4 +1,3 @@
-import { Workout } from 'assets/mocks/Workouts';
 import Button from 'components/atoms/Button/Button';
 import styled from 'styled-components';
 
@@ -44,13 +43,13 @@ export default function FullWorkout({ workout }: FullWorkoutProps) {
         <h1>Workout {workout.name}</h1>
         <p>{workout.warmupTime} min of warmup</p>
       </div>
-      <h2>Excercises:</h2>
+      <h2>Exercises:</h2>
       <ul>
-        {workout.excercises.map((excercise, index) => (
+        {workout.exercises?.map((exercise: Exercise, index: number) => (
           <li key={index}>
-            <h3>{excercise.name}</h3>
+            <h3>{exercise.name}</h3>
             <p>
-              {excercise.sets} x {excercise.reps}
+              {exercise.sets} x {exercise.reps}
             </p>
           </li>
         ))}

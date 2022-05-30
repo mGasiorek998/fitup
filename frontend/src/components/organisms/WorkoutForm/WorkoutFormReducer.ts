@@ -1,4 +1,8 @@
-type ActionTypes = 'HANDLE_INPUT_CHANGE' | 'SELECT_WORKOUT_TYPE' | 'CLEAR_FORM';
+type ActionTypes =
+  | 'HANDLE_INPUT_CHANGE'
+  | 'SELECT_WORKOUT_TYPE'
+  | 'CLEAR_FORM'
+  | 'SET_VALUES';
 
 interface Action {
   type: ActionTypes;
@@ -8,10 +12,13 @@ interface Action {
 export const initialState: WorkoutFormState = {
   name: '',
   type: '',
+  warmupTime: -1,
 };
 
 export const reducer = (state: WorkoutFormState, action: Action) => {
   switch (action.type) {
+    case 'SET_VALUES':
+      return action.payload as WorkoutFormState;
     case 'HANDLE_INPUT_CHANGE':
       return {
         ...state,

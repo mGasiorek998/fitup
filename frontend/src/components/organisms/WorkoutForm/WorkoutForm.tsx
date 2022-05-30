@@ -4,12 +4,13 @@ import JoggingWorkoutForm from 'components/molecules/JoggingWorkoutForm/JoggingW
 import SwimmingWorkoutForm from 'components/molecules/SwimmingWorkoutForm/SwimmingWorkoutForm';
 import WeightLiftingForm from 'components/molecules/WeightLiftingForm/WeightLiftingForm';
 import WellBeingForm from 'components/molecules/WellbeingForm/WellBeingForm';
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import { initialState, reducer } from './WorkoutFormReducer';
 import workoutTypesOptions from './workoutTypesOptions';
 
 interface WorkoutFormProps {
+  workoutToEdit: Workout | null;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
@@ -22,12 +23,15 @@ const StyledForm = styled.form`
   }
 `;
 
-export default function WorkoutForm({ onSubmit }: WorkoutFormProps) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export default function WorkoutForm({
+  workoutToEdit,
+  onSubmit,
+}: WorkoutFormProps) {
+  const [state, dispatch] = useReducer(reducer, workoutToEdit || initialState);
 
   const submitWorkout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state.type, state);
+    console.log(state.type, { ...state, selectedDay: null });
     dispatch({
       type: 'CLEAR_FORM',
     });
@@ -48,6 +52,10 @@ export default function WorkoutForm({ onSubmit }: WorkoutFormProps) {
     });
   };
 
+  useEffect(() => {
+    if (workoutToEdit) dispatch({ type: 'SET_VALUES', payload: workoutToEdit });
+  }, [workoutToEdit]);
+
   return (
     <>
       <h2>Add Workout</h2>
@@ -63,24 +71,45 @@ export default function WorkoutForm({ onSubmit }: WorkoutFormProps) {
           id="workoutType"
           name="type"
           type="select"
+          value={state.type}
           label="Workout type"
           options={workoutTypesOptions}
           onSelectItem={handleFormValuesChange}
         />
+        <FormInput
+          id="warmupTime"
+          name="warmupTime"
+          type="text"
+          label="Warmup time"
+          value={state.warmupTime >= 0 ? `${state.warmupTime}` : ''}
+          onChange={handleFormValuesChange}
+        />
         {state.type === 'jogging' && (
-          <JoggingWorkoutForm onFormValuesChange={handleFormValuesChange} />
+          <JoggingWorkoutForm
+            defaultValues={state}
+            onFormValuesChange={handleFormValuesChange}
+          />
         )}
         {state.type === 'swimming' && (
-          <SwimmingWorkoutForm onFormValuesChange={handleFormValuesChange} />
+          <SwimmingWorkoutForm
+            defaultValues={state}
+            onFormValuesChange={handleFormValuesChange}
+          />
         )}
         {state.type === 'wellBeing' && (
-          <WellBeingForm onFormValuesChange={handleFormValuesChange} />
+          <WellBeingForm
+            defaultValues={state}
+            onFormValuesChange={handleFormValuesChange}
+          />
         )}
         {state.type === 'weightLifting' && (
-          <WeightLiftingForm onFormValuesChange={handleFormValuesChange} />
+          <WeightLiftingForm
+            defaultValues={state}
+            onFormValuesChange={handleFormValuesChange}
+          />
         )}
         <Button type="submit" color="primary">
-          Add workout
+          {workoutToEdit ? 'Save' : 'Add'} workout
         </Button>
       </StyledForm>
     </>
