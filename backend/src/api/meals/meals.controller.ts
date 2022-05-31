@@ -18,17 +18,17 @@ export class MealsController {
 
   @Get()
   async getMany() {
-    await this.mealsService.findAll();
+    return await this.mealsService.findAll();
   }
 
   @Get(':id')
   async getOne(@Param('id') id: string) {
-    await this.mealsService.findOne(id);
+    return await this.mealsService.findOne(id);
   }
 
   @Post()
-  async create(@Body() body: CreateMealDto): Promise<void> {
-    await this.mealsService.createMeal(body);
+  async create(@Body() body: CreateMealDto) {
+    return await this.mealsService.createMeal(body);
   }
 
   @Patch(':id')

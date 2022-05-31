@@ -19,8 +19,8 @@ export default function NavigationMenu() {
         <Link to="/workouts" color="primary">
           WORKOUTS
         </Link>
-        <Link to="/diets" color="primary">
-          DIETS
+        <Link to="/meals" color="primary">
+          MEALS
         </Link>
       </StyledFlexWrapper>
       <StyledNavigationBottom>

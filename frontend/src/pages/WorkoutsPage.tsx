@@ -5,7 +5,7 @@ import {
   StyledSection,
   StyledCardHeading,
   StyledCard,
-} from './WorkoutPage.styles';
+} from './Page.styles';
 import { DAYS_OF_WEEK } from 'helpers/days';
 import { StyledFlexWrapper } from 'assets/styles/FlexContainer.styles';
 import Button from 'components/atoms/Button/Button';
