@@ -1,18 +1,11 @@
 import WorkoutItem from 'components/molecules/WorkoutItem/WorkoutItem';
-import styled from 'styled-components';
+import { StyledWrapper } from './WorkoutList.styles';
 
 interface WorkoutListProps {
   workouts: Workout[];
   onEditWorkout: (workout: Workout) => void;
   onSelect?: (workout: Workout) => void;
 }
-
-const StyledWrapper = styled.ul`
-  list-style: none;
-  width: 100%;
-  padding: 0 1rem;
-`;
-
 export default function WorkoutList({
   workouts,
   onEditWorkout,
