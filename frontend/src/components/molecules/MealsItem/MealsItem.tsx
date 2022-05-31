@@ -24,11 +24,11 @@ export default function MealsItem({
     <StyledItem>
       <MealNameWrapper>
         <h2>{meal.name}</h2>
-        <p>Calories: {meal.calories}</p>
+        <p>Calories: {meal.calories}kcal</p>
       </MealNameWrapper>
       <MealSummaryWrapper>
         <p>Total ingredients: {meal.ingredients.length}</p>
-        <p>Cooking time: {meal.avgCookingTime}</p>
+        <p>Cooking time: {meal.avgCookingTime}min</p>
         <Button
           fullWidth
           color="primary"

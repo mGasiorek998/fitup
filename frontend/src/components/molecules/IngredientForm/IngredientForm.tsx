@@ -54,6 +54,11 @@ export default function IngredeintForm({ onSubmit }: IngredeintFormProps) {
         onChange={handleInputChange}
       />
       <Button
+        disabled={
+          !ingredient.ingredientName ||
+          +ingredient.ingredientAmount <= 0 ||
+          +ingredient.ingredientCount <= 0
+        }
         type="button"
         fullWidth
         color="primary"

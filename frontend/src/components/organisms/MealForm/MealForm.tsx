@@ -20,6 +20,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
 
   const submitMeal = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       !mealToEdit
         ? await axios.post(`${API}/meals/`, state)
@@ -67,6 +68,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           name="name"
           type="text"
           label="name"
+          required={true}
           value={state.name}
           onChange={handleInputChange}
         />
@@ -83,6 +85,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           name="description"
           type="textarea"
           label="description"
+          required={true}
           value={state.description}
           onChange={handleInputChange}
         />
@@ -90,7 +93,9 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           id="avgCookingTime"
           name="avgCookingTime"
           type="number"
-          label="Average cooking time"
+          label="Average cooking time in mins"
+          required={true}
+          min={1}
           value={`${state.avgCookingTime}`}
           onChange={handleInputChange}
         />
@@ -99,6 +104,8 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           name="calories"
           type="number"
           label="Calories"
+          required={true}
+          min={1}
           value={`${state.calories}`}
           onChange={handleInputChange}
         />
@@ -120,7 +127,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
               ))}
             </StyledIngredientsList>
           ) : (
-            <h6>No igredients added.</h6>
+            <h5>No igredients added.</h5>
           )}
         </div>
         <Button
@@ -132,7 +139,13 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
         >
           Add ingredient
         </Button>
-        <Button fullWidth type="submit" color="primary" size="medium">
+        <Button
+          disabled={state.ingredients.length <= 0}
+          fullWidth
+          type="submit"
+          color="primary"
+          size="medium"
+        >
           {mealToEdit ? 'Save' : 'Add'} meal
         </Button>
       </StyledForm>
