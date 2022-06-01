@@ -1,11 +1,12 @@
-interface MealsFormState {
+export interface MealsFormState {
   name: string;
   description: string;
   ingredients: string[];
-  wayOfPreparation?: string;
-  avgCookingTime?: number;
-  calories?: number;
-  picture?: string;
+  wayOfPreparation: string;
+  avgCookingTime: number;
+  calories: number;
+  picture: string;
+  didLike: boolean;
 }
 
 type ActionTypes = 'HANDLE_INPUT_CHANGE' | 'CLEAR_FORM' | 'UPDATE_INGREDIENTS';
@@ -18,10 +19,12 @@ interface Action {
 export const initialState: MealsFormState = {
   name: '',
   description: '',
+  wayOfPreparation: '',
   ingredients: [],
   avgCookingTime: 0,
   calories: 0,
   picture: '',
+  didLike: false,
 };
 
 export const reducer = (state: MealsFormState, action: Action) => {

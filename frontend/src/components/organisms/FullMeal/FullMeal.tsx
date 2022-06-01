@@ -28,9 +28,13 @@ export default function FullMeal({ meal, onLikeButtonClick }: FullMealProps) {
         </MealSummary>
       </MealHeader>
       <MealDetails>
-        <MealDetial>
+        <MealDetial fullWidth>
           <h2>Description</h2>
           <p>{meal.description}</p>
+        </MealDetial>
+        <MealDetial>
+          <h2>Preparation</h2>
+          <p>{meal.wayOfPreparation}</p>
         </MealDetial>
         <MealDetial>
           <h2>Ingredients</h2>

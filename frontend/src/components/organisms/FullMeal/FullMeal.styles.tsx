@@ -44,16 +44,19 @@ export const MealDetails = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
   position: absolute;
   top: 50%;
   width: 100%;
-  gap: 50px;
+  gap: 20px;
   padding: 0 1rem;
 `;
 
-export const MealDetial = styled.div`
-  flex-basis: 50%;
-
+interface MealDetailProps {
+  fullWidth?: boolean;
+}
+export const MealDetial = styled.div<MealDetailProps>`
+  flex-basis: ${({ fullWidth }) => (fullWidth ? '100%' : 'calc(50% - 20px)')};
   & > h2 {
     border-bottom: 1px solid black;
   }

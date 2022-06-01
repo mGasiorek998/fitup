@@ -7,7 +7,7 @@ import useModal from 'hooks/useModal';
 import { API, Meal, removeIdFromMeal } from 'pages/MealsPage';
 import Modal from '../Modal/Modal';
 import { StyledForm, StyledIngredientsList } from './MealsForm.styles';
-import { reducer, initialState } from './MealsFormReducer';
+import { reducer, initialState, MealsFormState } from './MealsFormReducer';
 
 interface MealFormProps {
   mealToEdit: Meal | null;
@@ -15,12 +15,15 @@ interface MealFormProps {
 }
 
 export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
-  const [state, dispatch] = useReducer(reducer, mealToEdit || initialState);
+  const [state, dispatch] = useReducer(
+    reducer,
+    (mealToEdit as MealsFormState) || initialState
+  );
   const { isOpen, openModal, closeModal } = useModal();
 
   const submitMeal = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(state);
     try {
       !mealToEdit
         ? await axios.post(`${API}/meals/`, state)
@@ -51,11 +54,13 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     dispatch({
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value,
+        value:
+          name === 'calories' || name === 'avgCookingTime' ? +value : value,
       },
     });
   };
@@ -67,7 +72,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           id="name"
           name="name"
           type="text"
-          label="name"
+          label="Name"
           required={true}
           value={state.name}
           onChange={handleInputChange}
@@ -84,9 +89,18 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           id="description"
           name="description"
           type="textarea"
-          label="description"
+          label="Description"
           required={true}
           value={state.description}
+          onChange={handleInputChange}
+        />
+        <FormInput
+          id="wayOfPreparation"
+          name="wayOfPreparation"
+          type="text"
+          label="Preparation"
+          required={true}
+          value={state.wayOfPreparation}
           onChange={handleInputChange}
         />
         <FormInput
