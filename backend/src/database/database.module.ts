@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { Db, MongoClient } from 'mongodb';
 import { createMealsCollection } from '../utils/createMealsCollection';
+import { createWorkoutsCollection } from '../utils/createWorkoutsCollection';
 
 @Module({
   providers: [
@@ -17,6 +18,9 @@ import { createMealsCollection } from '../utils/createMealsCollection';
           );
           if (!namesOfCollections.includes('meals')) {
             createMealsCollection(db);
+          }
+          if (!namesOfCollections.includes('workouts')) {
+            createWorkoutsCollection(db);
           }
 
           return db;
