@@ -67,4 +67,43 @@ export class WorkoutsService {
       throw new NotFoundException();
     }
   }
+
+  async getWorkoutsByDay(selectedDay: string) {
+    if (selectedDay) {
+      return this.db
+        .collection('workouts')
+        .aggregate([
+          {
+            $match: {
+              selectedDay: selectedDay,
+            },
+          },
+        ])
+        .toArray();
+    }
+  }
+
+  async getVolume(id: string) {
+    if (id) {
+      return this.db
+        .collection('workouts')
+        .aggregate([
+          {
+            $match: {
+              _id: new ObjectId(id),
+            },
+          },
+          {
+            $unwind: '$exercises',
+          },
+          {
+            $project: {
+              exercises: '$exercises',
+              volume: {$multiply: ['$exercises.sets', '$exercises.reps']}
+            }
+          },
+        ])
+        .toArray();
+    }
+  }
 }

@@ -16,7 +16,7 @@ export const createWorkoutsCollection = (db) => {
             description: 'must be a string and is required',
           },
           warmupTime: {
-            bsonType: 'integer',
+            bsonType: 'int',
             description: 'must be a integer and is required',
           },
           selectedDay: {
@@ -28,23 +28,23 @@ export const createWorkoutsCollection = (db) => {
             description: 'must be a string if the field exists',
           },
           pools: {
-            bsonType: ['integer'],
+            bsonType: ['int'],
             description: 'must be a integer if the field exists',
           },
           rest: {
-            bsonType: ['integer'],
+            bsonType: ['int'],
             description: 'must be a integer if the field exists',
           },
           distance: {
-            bsonType: ['integer'],
+            bsonType: ['int'],
             description: 'must be a integer if the field exists',
           },
           time: {
-            bsonType: ['integer'],
+            bsonType: ['int'],
             description: 'must be a integer if the field exists',
           },
           runningTime: {
-            bsonType: ['integer'],
+            bsonType: ['int'],
             description: 'must be a integer if the field exists',
           },
           exercises: {

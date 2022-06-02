@@ -43,4 +43,14 @@ export class WorkoutsController {
   async delete(@Param('id') id: string): Promise<void> {
     await this.workoutsService.removeWorkout(id);
   }
+
+  @Get('/details/:selectedDay')
+  async getDetails(@Param('selectedDay') selectedDay: string) {
+    return await this.workoutsService.getWorkoutsByDay(selectedDay);
+  }
+
+  @Get('/volume/:id')
+  async getVolume(@Param('id') id: string) {
+    return await this.workoutsService.getVolume(id);
+  }
 }
