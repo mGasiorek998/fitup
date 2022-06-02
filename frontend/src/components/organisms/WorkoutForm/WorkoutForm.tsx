@@ -5,7 +5,7 @@ import SwimmingWorkoutForm from 'components/molecules/SwimmingWorkoutForm/Swimmi
 import WeightLiftingForm from 'components/molecules/WeightLiftingForm/WeightLiftingForm';
 import WellBeingForm from 'components/molecules/WellbeingForm/WellBeingForm';
 import React, { useEffect, useReducer } from 'react';
-import styled from 'styled-components';
+import { StyledForm } from './WorkoutForm.styles';
 import { initialState, reducer } from './WorkoutFormReducer';
 import workoutTypesOptions from './workoutTypesOptions';
 
@@ -13,15 +13,6 @@ interface WorkoutFormProps {
   workoutToEdit: Workout | null;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  & > * {
-    margin: 8px 0;
-  }
-`;
 
 export default function WorkoutForm({
   workoutToEdit,

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
+  fullWidth?: boolean;
   color: 'primary' | 'secondary';
   size: 'small' | 'medium' | 'large';
 }
@@ -26,6 +27,7 @@ const Button = styled.button<ButtonProps>`
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
 
   &:disabled {
     background-color: ${({ theme }) => theme.colors.lightGray};
