@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MongoClient, Db } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
+import { createMealsCollection } from '../utils/createMealsCollection';
 
 @Module({
   providers: [
@@ -9,7 +10,16 @@ import { MongoClient, Db } from 'mongodb';
         try {
           const client = await MongoClient.connect('mongodb://127.0.0.1');
 
-          return client.db('fitup');
+          const db = client.db('fitup');
+          const collections = await db.listCollections().toArray();
+          const namesOfCollections = collections.map(
+            (collection) => collection.name
+          );
+          if (!namesOfCollections.includes('meals')) {
+            createMealsCollection(db);
+          }
+
+          return db;
         } catch (e) {
           throw e;
         }
