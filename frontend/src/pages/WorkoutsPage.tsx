@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import DayButton from 'components/atoms/DayButton/DayButton';
 import {
   StyledWrapper,
   StyledSection,
@@ -15,7 +14,7 @@ import WorkoutList from 'components/organisms/WorkoutList/WorkoutList';
 import FullWorkout from 'components/organisms/FullWorkout/FullWorkout';
 import WorkoutForm from 'components/organisms/WorkoutForm/WorkoutForm';
 import axios from 'axios';
-import { API } from './MealsPage';
+import DaySummary from 'components/organisms/DaySummary/DaySummary';
 
 export const removeIdFromWorkout = (workout: Workout) => {
   const workoutWithoutId: { [key: string]: string | number | boolean } = {};
@@ -30,39 +29,79 @@ export const removeIdFromWorkout = (workout: Workout) => {
 
 export default function WorkoutsPage() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const [daySelected, setDaySelected] = useState<DayOfWeek | null>(null);
+  const [workoutSelected, setWorkoutSelected] = useState<Workout | null>(null);
   const [workoutToEdit, setWorkoutToEdit] = useState<Workout | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
+  const [modalContent, setModalContent] = useState<'form' | 'summary' | ''>('');
+  const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
 
   const fetchWorkouts = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API}/workouts`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/workouts`);
       setWorkouts(data);
     } catch (e) {
       console.error(e);
     }
   }, []);
 
-  const addNewWorkout = () => {
-    fetchWorkouts();
-    closeModal();
+  const updateWorkouts = async (workout: Workout) => {
+    try {
+      workoutToEdit
+        ? await axios.patch(
+            `${process.env.REACT_APP_API}/workouts/${workoutToEdit._id}`,
+            removeIdFromWorkout(workout)
+          )
+        : await axios.post(
+            `${process.env.REACT_APP_API}/workouts`,
+            removeIdFromWorkout(workout)
+          );
+      await fetchWorkouts();
+      if (workoutSelected && workoutSelected._id === workout._id)
+        setWorkoutSelected(workout);
+      closeModal();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const handleDaySelect = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setDaySelected(event.target.value as DayOfWeek);
+  const handleSelectWorkout = (workout: Workout) => setWorkoutSelected(workout);
 
   const handleEditWorkout = (workout: Workout) => {
     setWorkoutToEdit(workout);
+    setModalContent('form');
     openModal();
   };
 
   const handleDeleteWorkout = async (id: string) => {
+    if (workoutSelected && workoutSelected._id === id) setWorkoutSelected(null);
+
     try {
-      await axios.delete(`${API}/workouts/${id}`);
-      fetchWorkouts();
+      await axios.delete(`${process.env.REACT_APP_API}/workouts/${id}`);
+      await fetchWorkouts();
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const updateWorkoutDay = async (workout: Workout) => {
+    try {
+      await axios.patch(
+        `${process.env.REACT_APP_API}/workouts/${workout._id}`,
+        removeIdFromWorkout(workout)
+      );
+      if (workoutSelected && workoutSelected._id === workout._id) {
+        setWorkoutSelected(workout);
+      }
+      await fetchWorkouts();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const showDaySummary = (day: DayOfWeek) => {
+    setSelectedDay(day);
+    setModalContent('summary');
+    openModal();
   };
 
   useEffect(() => {
@@ -82,12 +121,15 @@ export default function WorkoutsPage() {
           </CardHeader>
           <StyledCard>
             {DAYS_OF_WEEK.map((day) => (
-              <DayButton
+              <Button
+                fullWidth
                 key={day}
-                day={day}
-                isSelected={day === daySelected}
-                onSelect={handleDaySelect}
-              />
+                color="transparent"
+                size="large"
+                onClick={() => showDaySummary(day)}
+              >
+                {day}
+              </Button>
             ))}
           </StyledCard>
         </StyledSection>
@@ -95,7 +137,14 @@ export default function WorkoutsPage() {
           <StyledCardHeading>
             <CardHeader>
               <StyledCardHeading>WORKOUTS LIST</StyledCardHeading>
-              <Button size="small" color="primary" onClick={openModal}>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => {
+                  setModalContent('form');
+                  openModal();
+                }}
+              >
                 Add Workout
               </Button>
             </CardHeader>
@@ -104,22 +153,31 @@ export default function WorkoutsPage() {
             <WorkoutList
               workouts={workouts}
               onEditWorkout={handleEditWorkout}
+              onUpdateDay={updateWorkoutDay}
               onDeleteWorkout={handleDeleteWorkout}
-              onSelect={() => console.log('onSelect()')}
+              onSelect={handleSelectWorkout}
             />
           </StyledCard>
         </StyledSection>
         <StyledSection id="workouts-details">
           <CardHeader>
-            <StyledCardHeading>Name of the workout here</StyledCardHeading>
+            <StyledCardHeading>
+              {workoutSelected && workoutSelected.name}
+            </StyledCardHeading>
           </CardHeader>
           <StyledCard display="block">
-            {/* <FullWorkout workout={} /> */}
+            <FullWorkout workout={workoutSelected} />
           </StyledCard>
         </StyledSection>
       </StyledWrapper>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <WorkoutForm workoutToEdit={workoutToEdit} onSubmit={addNewWorkout} />
+        {modalContent === 'form' && (
+          <WorkoutForm
+            workoutToEdit={workoutToEdit}
+            onSubmit={updateWorkouts}
+          />
+        )}
+        {modalContent === 'summary' && <DaySummary day={selectedDay} />}
       </Modal>
     </>
   );

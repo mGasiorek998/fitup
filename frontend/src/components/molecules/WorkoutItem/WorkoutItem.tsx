@@ -1,10 +1,6 @@
-import axios from 'axios';
 import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import daysOptions from 'components/organisms/WorkoutForm/daysOptions';
-import { API } from 'pages/MealsPage';
-import { removeIdFromWorkout } from 'pages/WorkoutsPage';
-import { useState } from 'react';
 
 import {
   StyledWrapper,
@@ -17,6 +13,7 @@ import {
 interface WorkoutItemProps {
   workout: Workout;
   onEdit: () => void;
+  onUpdateDay: (workout: Workout) => void;
   onSelect?: (workout: Workout) => void;
   onDelete: (id: string) => void;
 }
@@ -24,30 +21,16 @@ interface WorkoutItemProps {
 export default function WorkoutItem({
   workout,
   onEdit,
+  onUpdateDay,
   onSelect,
   onDelete,
 }: WorkoutItemProps) {
-  const [selectedDay, setSelectedDay] = useState<DayOfWeek>(
-    workout.selectedDay
-  );
-
   const handleSelect = () => {
     onSelect?.(workout);
   };
 
-  const handleEditDay = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    try {
-      setSelectedDay(event.target.value as DayOfWeek);
-      await axios.patch(
-        `${API}/workouts/${workout._id}`,
-        removeIdFromWorkout({
-          ...workout,
-          selectedDay: event.target.value as DayOfWeek,
-        })
-      );
-    } catch (e) {
-      console.error(e);
-    }
+  const handleEditDay = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    onUpdateDay({ ...workout, selectedDay: event.target.value as DayOfWeek });
   };
 
   return (
@@ -75,7 +58,7 @@ export default function WorkoutItem({
               fullWidth
               size="small"
               color="secondary"
-              onClick={() => onDelete(workout._id)}
+              onClick={() => onDelete(workout._id as string)}
             >
               Delete
             </Button>
@@ -89,7 +72,7 @@ export default function WorkoutItem({
           label="On day"
           type="select"
           options={daysOptions}
-          value={selectedDay}
+          value={workout.selectedDay}
           onSelectItem={handleEditDay}
           withoutEmptyOption
         >

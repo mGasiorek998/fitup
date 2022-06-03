@@ -23,7 +23,9 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExercise((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [event.target.name]: isNaN(+event.target.value)
+        ? event.target.value
+        : +event.target.value,
     }));
   };
 
@@ -51,6 +53,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
         onChange={handleInputChange}
       />
       <Button
+        fullWidth
         disabled={!excercise.name || !excercise.sets || !excercise.reps}
         type="submit"
         size="medium"

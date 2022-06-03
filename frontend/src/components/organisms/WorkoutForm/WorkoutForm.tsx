@@ -1,12 +1,9 @@
-import axios from 'axios';
 import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import JoggingWorkoutForm from 'components/molecules/JoggingWorkoutForm/JoggingWorkoutForm';
 import SwimmingWorkoutForm from 'components/molecules/SwimmingWorkoutForm/SwimmingWorkoutForm';
 import WeightLiftingForm from 'components/molecules/WeightLiftingForm/WeightLiftingForm';
 import WellBeingForm from 'components/molecules/WellbeingForm/WellBeingForm';
-import { API } from 'pages/MealsPage';
-import { removeIdFromWorkout } from 'pages/WorkoutsPage';
 import React, { useEffect, useReducer } from 'react';
 import { StyledForm } from './WorkoutForm.styles';
 import { initialState, reducer } from './WorkoutFormReducer';
@@ -15,7 +12,7 @@ import daysOptions from './daysOptions';
 
 interface WorkoutFormProps {
   workoutToEdit: Workout | null;
-  onSubmit: () => void;
+  onSubmit: (workout: Workout) => void;
 }
 
 export default function WorkoutForm({
@@ -26,22 +23,7 @@ export default function WorkoutForm({
 
   const submitWorkout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      workoutToEdit
-        ? await axios.patch(
-            `${API}/workouts/${workoutToEdit._id}`,
-            removeIdFromWorkout(state)
-          )
-        : await axios.post(`${API}/workouts`, removeIdFromWorkout(state));
-
-      dispatch({
-        type: 'CLEAR_FORM',
-      });
-
-      onSubmit();
-    } catch (e) {
-      console.error(e);
-    }
+    onSubmit(state);
   };
 
   const handleFormValuesChange = (

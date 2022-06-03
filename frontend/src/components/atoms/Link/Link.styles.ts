@@ -17,4 +17,9 @@ export const StyledNavLink = styled(NavLink)<LinkProps>`
     color: ${({ theme, color }) =>
       color === 'primary' ? '#FFF' : theme.colors.darkPurple};
   }
+
+  &.active {
+    background-color: ${({ theme }) => theme.colors.darkPurple};
+    color: #fff;
+  }
 `;

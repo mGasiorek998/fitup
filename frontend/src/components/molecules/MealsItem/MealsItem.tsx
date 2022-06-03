@@ -1,5 +1,4 @@
 import Button from 'components/atoms/Button/Button';
-import { Meal } from 'pages/MealsPage';
 import {
   MealNameWrapper,
   MealsActions,
@@ -33,7 +32,7 @@ export default function MealsItem({
           fullWidth
           color="primary"
           size="small"
-          onClick={() => onSeeDetials(meal._id)}
+          onClick={() => onSeeDetials(meal._id as string)}
         >
           See Details
         </Button>
@@ -50,7 +49,7 @@ export default function MealsItem({
             fullWidth
             color="secondary"
             size="small"
-            onClick={() => onDelete(meal._id)}
+            onClick={() => onDelete(meal._id as string)}
           >
             Delete
           </Button>

@@ -4,10 +4,10 @@ import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import IngredeintForm from 'components/molecules/IngredientForm/IngredientForm';
 import useModal from 'hooks/useModal';
-import { API, Meal, removeIdFromMeal } from 'pages/MealsPage';
 import Modal from '../Modal/Modal';
 import { StyledForm, StyledIngredientsList } from './MealsForm.styles';
 import { reducer, initialState, MealsFormState } from './MealsFormReducer';
+import { removeIdFromEntity } from 'helpers/removeId';
 
 interface MealFormProps {
   mealToEdit: Meal | null;
@@ -23,13 +23,12 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
 
   const submitMeal = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state);
     try {
       !mealToEdit
-        ? await axios.post(`${API}/meals/`, state)
+        ? await axios.post(`${process.env.REACT_APP_API}/meals/`, state)
         : await axios.patch(
-            `${API}/meals/${mealToEdit._id}`,
-            removeIdFromMeal(state as Meal)
+            `${process.env.REACT_APP_API}/meals/${mealToEdit._id}`,
+            removeIdFromEntity(state as Meal)
           );
       mealToEdit ? onSuccess(state as Meal) : onSuccess(null);
     } catch (e) {
@@ -59,8 +58,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value:
-          name === 'calories' || name === 'avgCookingTime' ? +value : value,
+        value: isNaN(+value) ? value : +value,
       },
     });
   };

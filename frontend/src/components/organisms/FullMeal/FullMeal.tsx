@@ -1,4 +1,3 @@
-import { Meal } from 'pages/MealsPage';
 import {
   FullMealWrapper,
   IngredientsList,

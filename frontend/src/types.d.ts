@@ -1,12 +1,31 @@
+type DayOfWeek =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
 type WorkoutTypes = 'jogging' | 'swimming' | 'weightLifting' | 'wellBeing' | '';
+
+interface Meal {
+  _id: string;
+  name: string;
+  description: string;
+  ingredients: string[];
+  wayOfPreparation?: string;
+  avgCookingTime?: number;
+  calories?: number;
+  picture?: string;
+  didLike?: boolean;
+}
 
 interface Exercise {
   name: string;
   sets: number;
   reps: number;
 }
-
-interface WorkoutFormState extends Workout {}
 
 interface Workout {
   _id: string;
