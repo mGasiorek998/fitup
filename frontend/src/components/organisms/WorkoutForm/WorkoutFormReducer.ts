@@ -10,9 +10,11 @@ interface Action {
 }
 
 export const initialState: WorkoutFormState = {
+  _id: '',
   name: '',
   type: '',
   warmupTime: -1,
+  selectedDay: 'Monday',
 };
 
 export const reducer = (state: WorkoutFormState, action: Action) => {

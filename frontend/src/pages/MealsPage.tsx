@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { StyledFlexWrapper } from 'assets/styles/FlexContainer.styles';
 import Button from 'components/atoms/Button/Button';
 import MealForm from 'components/organisms/MealForm/MealForm';
 import Modal from 'components/organisms/Modal/Modal';
@@ -11,6 +10,8 @@ import {
   StyledSection,
   StyledCard,
   StyledList,
+  CardHeader,
+  Divider,
 } from './Page.styles';
 import MealsItem from 'components/molecules/MealsItem/MealsItem';
 import FullMeal from 'components/organisms/FullMeal/FullMeal';
@@ -119,21 +120,16 @@ export default function MealsPage() {
     <>
       <StyledWrapperWithTwoColumns>
         <StyledSection id="meals">
-          <StyledCardHeading>
-            <StyledFlexWrapper
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              MEALS
-              <Button size="medium" color="primary" onClick={openModal}>
-                Add Meal
-              </Button>
-            </StyledFlexWrapper>
-          </StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>MEALS</StyledCardHeading>
+            <Button size="small" color="primary" onClick={openModal}>
+              Add Meal
+            </Button>
+          </CardHeader>
           <StyledCard contentPos="start">
             {likedMealsList.length > 0 && (
               <>
-                <h3>Liked Meals</h3>
+                <h3>Pinned</h3>
                 <StyledList>
                   {likedMealsList.map(
                     (meal) =>
@@ -148,11 +144,11 @@ export default function MealsPage() {
                       )
                   )}
                 </StyledList>
+                <Divider />
               </>
             )}
             {mealsList.length > 0 ? (
               <>
-                <h3>All Meals</h3>
                 <StyledList>
                   {mealsList.map(
                     (meal) =>
@@ -174,7 +170,9 @@ export default function MealsPage() {
           </StyledCard>
         </StyledSection>
         <StyledSection id="fullMeal">
-          <StyledCardHeading>Full Meal</StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>FULL MEAL</StyledCardHeading>
+          </CardHeader>
           <StyledCard>
             {selectedMeal ? (
               <FullMeal meal={selectedMeal} onLikeButtonClick={likeMeal} />

@@ -1,17 +1,21 @@
+import axios from 'axios';
 import Button from 'components/atoms/Button/Button';
 import FormInput from 'components/atoms/FormInput/FormInput';
 import JoggingWorkoutForm from 'components/molecules/JoggingWorkoutForm/JoggingWorkoutForm';
 import SwimmingWorkoutForm from 'components/molecules/SwimmingWorkoutForm/SwimmingWorkoutForm';
 import WeightLiftingForm from 'components/molecules/WeightLiftingForm/WeightLiftingForm';
 import WellBeingForm from 'components/molecules/WellbeingForm/WellBeingForm';
+import { API } from 'pages/MealsPage';
+import { removeIdFromWorkout } from 'pages/WorkoutsPage';
 import React, { useEffect, useReducer } from 'react';
 import { StyledForm } from './WorkoutForm.styles';
 import { initialState, reducer } from './WorkoutFormReducer';
 import workoutTypesOptions from './workoutTypesOptions';
+import daysOptions from './daysOptions';
 
 interface WorkoutFormProps {
   workoutToEdit: Workout | null;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: () => void;
 }
 
 export default function WorkoutForm({
@@ -20,15 +24,24 @@ export default function WorkoutForm({
 }: WorkoutFormProps) {
   const [state, dispatch] = useReducer(reducer, workoutToEdit || initialState);
 
-  const submitWorkout = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e);
+  const submitWorkout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state.type, { ...state, selectedDay: null });
-    dispatch({
-      type: 'CLEAR_FORM',
-    });
+    try {
+      workoutToEdit
+        ? await axios.patch(
+            `${API}/workouts/${workoutToEdit._id}`,
+            removeIdFromWorkout(state)
+          )
+        : await axios.post(`${API}/workouts`, removeIdFromWorkout(state));
 
-    onSubmit(e);
+      dispatch({
+        type: 'CLEAR_FORM',
+      });
+
+      onSubmit();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleFormValuesChange = (
@@ -39,7 +52,7 @@ export default function WorkoutForm({
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value,
+        value: isNaN(+value) ? value : +value,
       },
     });
   };
@@ -53,12 +66,20 @@ export default function WorkoutForm({
       <h2>{workoutToEdit ? 'Edit' : 'Add'} Workout</h2>
       <StyledForm onSubmit={submitWorkout}>
         <FormInput
-          disabled={!!workoutToEdit}
           id="workoutName"
           label="Workout name"
           name="name"
           value={state.name}
           onChange={handleFormValuesChange}
+        />
+        <FormInput
+          id="selectedDay"
+          label="Select day"
+          name="selectedDay"
+          options={daysOptions}
+          type="select"
+          onSelectItem={handleFormValuesChange}
+          withoutEmptyOption
         />
         <FormInput
           disabled={!!workoutToEdit}

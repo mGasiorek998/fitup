@@ -9,6 +9,7 @@ interface Exercise {
 interface WorkoutFormState extends Workout {}
 
 interface Workout {
+  _id: string;
   type: WorkoutTypes;
   name: string;
   warmupTime: number;
@@ -20,7 +21,7 @@ interface Workout {
   distance?: number;
   wellBeingType?: string;
   time?: number;
-  selectedDay?: DayOfWeek | null;
+  selectedDay: DayOfWeek;
 }
 
 interface ExercisesEvent {

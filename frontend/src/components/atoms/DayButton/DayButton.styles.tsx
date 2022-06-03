@@ -16,8 +16,8 @@ export const StyledDayButton = styled.div<DayButtonStylesProps>`
       isSelected ? theme.colors.darkPurple : 'trasparent'};
     font-size: ${({ theme }) => theme.fontSize.m};
     cursor: pointer;
-    padding: 40px 30px;
-    border-radius: 20px;
+    border-radius: 5px;
+    padding: 10px;
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.darkPurple};
