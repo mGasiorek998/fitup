@@ -30,4 +30,4 @@
 
 ### Done
   
-  -If tests are successful, move the ticket to **Done** section 
+  - If tests are successful, move the ticket to **Done** section 
