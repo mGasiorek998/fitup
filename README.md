@@ -1,5 +1,10 @@
 # FITUP
 
+## Stack
+  - Frontend: React & styled-components
+  - Backend: Nest
+  - Database: MongoDB, Redis
+
 ## Installation & Setup
 
 ### MongoDB for Windows
@@ -27,31 +32,10 @@
 
 - Open **fitup-main** directory in **Visual Studio Code**
 - In Terminal use **npm install** command
-- Go to **frontend** directory and use **npm install** command
-- Go to **backend** directory and use **npm install** command
+- Go to **frontend** directory and use command **npm install**
+- Go to **backend** directory and use command **npm install**
 - In the **backend** directory use **npm run start:dev**
 - Open a new instance of Terminal
 - Go to **frontend** directory
 - Use **npm start**
 - Preferable browser is **Google Chrome**
-
-### Workflow:
-
-- To do
-  - nowe taski
-- In progress
-  - Tworzenie brancha: FU:#numer_id_ticketa-nazwa-ticketa
-  - Pisanie kodu
-  - Nazewnictwo commitów: Nazwa brancha: Commit Message
-  - Pisanie testów
-  - Stworzenie Pull requresta
-  - Podpięcie PR do ticketa
-  - Dodanie czasu spędzonego w komentarzu do ticketa
-- Code Review
-  - Poinformowanie o PR na grupie messenger
-  - Przynajmniej 1 approve potrzebny
-  - Mergowanie do main (robi to Owner ticketa)
-- Testing
-  - testy manualne (po mergu)
-- Done
-  - Zakończone taski
