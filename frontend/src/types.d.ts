@@ -1,4 +1,25 @@
+type DayOfWeek =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
 type WorkoutTypes = 'jogging' | 'swimming' | 'weightLifting' | 'wellBeing' | '';
+
+interface Meal {
+  _id: string;
+  name: string;
+  description: string;
+  ingredients: string[];
+  wayOfPreparation?: string;
+  avgCookingTime?: number;
+  calories?: number;
+  picture?: string;
+  didLike?: boolean;
+}
 
 interface Exercise {
   name: string;
@@ -6,9 +27,8 @@ interface Exercise {
   reps: number;
 }
 
-interface WorkoutFormState extends Workout {}
-
 interface Workout {
+  _id: string;
   type: WorkoutTypes;
   name: string;
   warmupTime: number;
@@ -20,7 +40,7 @@ interface Workout {
   distance?: number;
   wellBeingType?: string;
   time?: number;
-  selectedDay?: DayOfWeek | null;
+  selectedDay: DayOfWeek;
 }
 
 interface ExercisesEvent {

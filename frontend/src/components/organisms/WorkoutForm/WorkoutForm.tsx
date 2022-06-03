@@ -8,10 +8,11 @@ import React, { useEffect, useReducer } from 'react';
 import { StyledForm } from './WorkoutForm.styles';
 import { initialState, reducer } from './WorkoutFormReducer';
 import workoutTypesOptions from './workoutTypesOptions';
+import daysOptions from './daysOptions';
 
 interface WorkoutFormProps {
   workoutToEdit: Workout | null;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (workout: Workout) => void;
 }
 
 export default function WorkoutForm({
@@ -20,15 +21,9 @@ export default function WorkoutForm({
 }: WorkoutFormProps) {
   const [state, dispatch] = useReducer(reducer, workoutToEdit || initialState);
 
-  const submitWorkout = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e);
+  const submitWorkout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state.type, { ...state, selectedDay: null });
-    dispatch({
-      type: 'CLEAR_FORM',
-    });
-
-    onSubmit(e);
+    onSubmit(state);
   };
 
   const handleFormValuesChange = (
@@ -39,7 +34,7 @@ export default function WorkoutForm({
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value,
+        value: isNaN(+value) ? value : +value,
       },
     });
   };
@@ -53,12 +48,20 @@ export default function WorkoutForm({
       <h2>{workoutToEdit ? 'Edit' : 'Add'} Workout</h2>
       <StyledForm onSubmit={submitWorkout}>
         <FormInput
-          disabled={!!workoutToEdit}
           id="workoutName"
           label="Workout name"
           name="name"
           value={state.name}
           onChange={handleFormValuesChange}
+        />
+        <FormInput
+          id="selectedDay"
+          label="Select day"
+          name="selectedDay"
+          options={daysOptions}
+          type="select"
+          onSelectItem={handleFormValuesChange}
+          withoutEmptyOption
         />
         <FormInput
           disabled={!!workoutToEdit}

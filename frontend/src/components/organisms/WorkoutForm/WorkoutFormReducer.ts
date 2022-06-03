@@ -9,16 +9,18 @@ interface Action {
   payload?: any;
 }
 
-export const initialState: WorkoutFormState = {
+export const initialState: Workout = {
+  _id: '',
   name: '',
   type: '',
   warmupTime: -1,
+  selectedDay: 'Monday',
 };
 
-export const reducer = (state: WorkoutFormState, action: Action) => {
+export const reducer = (state: Workout, action: Action) => {
   switch (action.type) {
     case 'SET_VALUES':
-      return action.payload as WorkoutFormState;
+      return action.payload as Workout;
     case 'HANDLE_INPUT_CHANGE':
       return {
         ...state,

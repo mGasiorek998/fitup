@@ -6,6 +6,7 @@ interface FormInput extends React.HTMLProps<HTMLInputElement> {
   name?: string;
   disabled?: boolean;
   value?: string;
+  withoutEmptyOption?: boolean;
   options?: { label: string; value: string }[];
   onSelectItem?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,6 +16,7 @@ export default function FormInput({
   id,
   options,
   disabled,
+  withoutEmptyOption,
   type,
   name,
   value,
@@ -33,7 +35,7 @@ export default function FormInput({
           value={value}
           onChange={onSelectItem}
         >
-          <option value="">-</option>
+          {!withoutEmptyOption && <option value="">-</option>}
           {options?.map((o, i) => (
             <option key={i} value={o.value}>
               {o.label}

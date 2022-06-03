@@ -1,106 +1,183 @@
-import { useEffect, useState } from 'react';
-import DayButton from 'components/atoms/DayButton/DayButton';
+import { useCallback, useEffect, useState } from 'react';
 import {
   StyledWrapper,
   StyledSection,
   StyledCardHeading,
   StyledCard,
+  CardHeader,
 } from './Page.styles';
 import { DAYS_OF_WEEK } from 'helpers/days';
-import { StyledFlexWrapper } from 'assets/styles/FlexContainer.styles';
 import Button from 'components/atoms/Button/Button';
 import Modal from 'components/organisms/Modal/Modal';
 import useModal from 'hooks/useModal';
 import WorkoutList from 'components/organisms/WorkoutList/WorkoutList';
-import workoutsListMock from 'assets/mocks/Workouts';
 import FullWorkout from 'components/organisms/FullWorkout/FullWorkout';
 import WorkoutForm from 'components/organisms/WorkoutForm/WorkoutForm';
+import axios from 'axios';
+import DaySummary from 'components/organisms/DaySummary/DaySummary';
+
+export const removeIdFromWorkout = (workout: Workout) => {
+  const workoutWithoutId: { [key: string]: string | number | boolean } = {};
+  for (const [key, value] of Object.entries(workout)) {
+    if (key !== '_id') {
+      workoutWithoutId[key] = value;
+    }
+  }
+
+  return workoutWithoutId;
+};
 
 export default function WorkoutsPage() {
-  const [daySelected, setDaySelected] = useState<DayOfWeek | null>(null);
-  const [selectedWorkouts, setSelectedWorkouts] = useState<Workout[]>([]);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workoutSelected, setWorkoutSelected] = useState<Workout | null>(null);
   const [workoutToEdit, setWorkoutToEdit] = useState<Workout | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
+  const [modalContent, setModalContent] = useState<'form' | 'summary' | ''>('');
+  const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
 
-  const handleDaySelect = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setDaySelected(event.target.value as DayOfWeek);
+  const fetchWorkouts = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/workouts`);
+      setWorkouts(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
-  const handleSelectWorkout = (workout: Workout) => {
-    workoutsListMock.forEach((w) => {
-      if (w.name === workout.name) w.selectedDay = daySelected;
-    });
+  const updateWorkouts = async (workout: Workout) => {
+    try {
+      workoutToEdit
+        ? await axios.patch(
+            `${process.env.REACT_APP_API}/workouts/${workoutToEdit._id}`,
+            removeIdFromWorkout(workout)
+          )
+        : await axios.post(
+            `${process.env.REACT_APP_API}/workouts`,
+            removeIdFromWorkout(workout)
+          );
+      await fetchWorkouts();
+      if (workoutSelected && workoutSelected._id === workout._id)
+        setWorkoutSelected(workout);
+      closeModal();
+    } catch (e) {
+      console.error(e);
+    }
   };
+
+  const handleSelectWorkout = (workout: Workout) => setWorkoutSelected(workout);
 
   const handleEditWorkout = (workout: Workout) => {
     setWorkoutToEdit(workout);
+    setModalContent('form');
+    openModal();
+  };
+
+  const handleDeleteWorkout = async (id: string) => {
+    if (workoutSelected && workoutSelected._id === id) setWorkoutSelected(null);
+
+    try {
+      await axios.delete(`${process.env.REACT_APP_API}/workouts/${id}`);
+      await fetchWorkouts();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const updateWorkoutDay = async (workout: Workout) => {
+    try {
+      await axios.patch(
+        `${process.env.REACT_APP_API}/workouts/${workout._id}`,
+        removeIdFromWorkout(workout)
+      );
+      if (workoutSelected && workoutSelected._id === workout._id) {
+        setWorkoutSelected(workout);
+      }
+      await fetchWorkouts();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const showDaySummary = (day: DayOfWeek) => {
+    setSelectedDay(day);
+    setModalContent('summary');
     openModal();
   };
 
   useEffect(() => {
-    if (!daySelected) return;
-
-    const selectedWorkouts = workoutsListMock.filter(
-      (workout) => workout.selectedDay === daySelected
-    );
-
-    setSelectedWorkouts(selectedWorkouts);
-  }, [daySelected, workoutsListMock]);
+    fetchWorkouts();
+  }, []);
 
   useEffect(() => {
-    if (!isOpen) setWorkoutToEdit(null);
+    if (!isOpen && workoutToEdit !== null) setWorkoutToEdit(null);
   }, [isOpen]);
 
   return (
     <>
       <StyledWrapper>
         <StyledSection id="days">
-          <StyledCardHeading>SELECT DATE</StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>SELECT DATE</StyledCardHeading>
+          </CardHeader>
           <StyledCard>
             {DAYS_OF_WEEK.map((day) => (
-              <DayButton
+              <Button
+                fullWidth
                 key={day}
-                day={day}
-                isSelected={day === daySelected}
-                onSelect={handleDaySelect}
-              />
+                color="transparent"
+                size="large"
+                onClick={() => showDaySummary(day)}
+              >
+                {day}
+              </Button>
             ))}
           </StyledCard>
         </StyledSection>
         <StyledSection id="workouts-list">
           <StyledCardHeading>
-            <StyledFlexWrapper
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              SELECT WORKOUT {daySelected && `FOR ${daySelected.toUpperCase()}`}
-              <Button size="medium" color="primary" onClick={openModal}>
+            <CardHeader>
+              <StyledCardHeading>WORKOUTS LIST</StyledCardHeading>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => {
+                  setModalContent('form');
+                  openModal();
+                }}
+              >
                 Add Workout
               </Button>
-            </StyledFlexWrapper>
+            </CardHeader>
           </StyledCardHeading>
           <StyledCard contentPos="start">
-            <h1>Selected</h1>
             <WorkoutList
+              workouts={workouts}
               onEditWorkout={handleEditWorkout}
-              workouts={selectedWorkouts}
-            />
-            <h1>All</h1>
-            <WorkoutList
-              workouts={workoutsListMock}
-              onEditWorkout={handleEditWorkout}
+              onUpdateDay={updateWorkoutDay}
+              onDeleteWorkout={handleDeleteWorkout}
               onSelect={handleSelectWorkout}
             />
           </StyledCard>
         </StyledSection>
         <StyledSection id="workouts-details">
-          <StyledCardHeading>Name of the workout here</StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>
+              {workoutSelected && workoutSelected.name}
+            </StyledCardHeading>
+          </CardHeader>
           <StyledCard display="block">
-            <FullWorkout workout={workoutsListMock[0]} />
+            <FullWorkout workout={workoutSelected} />
           </StyledCard>
         </StyledSection>
       </StyledWrapper>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <WorkoutForm workoutToEdit={workoutToEdit} onSubmit={closeModal} />
+        {modalContent === 'form' && (
+          <WorkoutForm
+            workoutToEdit={workoutToEdit}
+            onSubmit={updateWorkouts}
+          />
+        )}
+        {modalContent === 'summary' && <DaySummary day={selectedDay} />}
       </Modal>
     </>
   );

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { StyledFlexWrapper } from 'assets/styles/FlexContainer.styles';
 import Button from 'components/atoms/Button/Button';
 import MealForm from 'components/organisms/MealForm/MealForm';
 import Modal from 'components/organisms/Modal/Modal';
@@ -11,34 +10,12 @@ import {
   StyledSection,
   StyledCard,
   StyledList,
+  CardHeader,
+  Divider,
 } from './Page.styles';
 import MealsItem from 'components/molecules/MealsItem/MealsItem';
 import FullMeal from 'components/organisms/FullMeal/FullMeal';
-
-export const API = 'http://localhost:8000';
-
-export interface Meal {
-  _id: string;
-  name: string;
-  description: string;
-  ingredients: string[];
-  wayOfPreparation?: string;
-  avgCookingTime?: number;
-  calories?: number;
-  picture?: string;
-  didLike?: boolean;
-}
-
-export const removeIdFromMeal = (meal: Meal) => {
-  const mealWithoutId: { [key: string]: string | number | boolean } = {};
-  for (const [key, value] of Object.entries(meal)) {
-    if (key !== '_id') {
-      mealWithoutId[key] = value;
-    }
-  }
-
-  return mealWithoutId;
-};
+import { removeIdFromEntity } from 'helpers/removeId';
 
 export default function MealsPage() {
   const [mealsList, setMealsList] = useState<Meal[]>([]);
@@ -48,7 +25,7 @@ export default function MealsPage() {
   const { isOpen, openModal, closeModal } = useModal();
 
   const fetchMeals = useCallback(async () => {
-    const { data } = await axios.get(`${API}/meals`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API}/meals`);
     const likedMeals = data.filter((meal: Meal) => meal.didLike === true);
     setMealsList(data);
     setLikedMealsList(likedMeals);
@@ -56,7 +33,9 @@ export default function MealsPage() {
 
   const selectMeal = async (id: string) => {
     try {
-      const { data } = await axios.get(`${API}/meals/${id}`);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/meals/${id}`
+      );
       setSelectedMeal(data);
     } catch (e) {
       console.error(e);
@@ -78,7 +57,7 @@ export default function MealsPage() {
   const deleteMeal = async (id: string) => {
     const foundMeal = mealsList.find((meal) => meal._id === id);
     try {
-      await axios.delete(`${API}/meals/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API}/meals/${id}`);
       // unselect meal if deleted:
       if (JSON.stringify(foundMeal) === JSON.stringify(selectedMeal))
         setSelectedMeal(null);
@@ -97,8 +76,8 @@ export default function MealsPage() {
 
     try {
       await axios.patch(
-        `${API}/meals/${selectedMeal._id}`,
-        removeIdFromMeal(likedMeal)
+        `${process.env.REACT_APP_API}/meals/${selectedMeal._id}`,
+        removeIdFromEntity(likedMeal)
       );
       fetchMeals();
     } catch (e) {
@@ -119,21 +98,16 @@ export default function MealsPage() {
     <>
       <StyledWrapperWithTwoColumns>
         <StyledSection id="meals">
-          <StyledCardHeading>
-            <StyledFlexWrapper
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              MEALS
-              <Button size="medium" color="primary" onClick={openModal}>
-                Add Meal
-              </Button>
-            </StyledFlexWrapper>
-          </StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>MEALS</StyledCardHeading>
+            <Button size="small" color="primary" onClick={openModal}>
+              Add Meal
+            </Button>
+          </CardHeader>
           <StyledCard contentPos="start">
             {likedMealsList.length > 0 && (
               <>
-                <h3>Liked Meals</h3>
+                <h3>Pinned</h3>
                 <StyledList>
                   {likedMealsList.map(
                     (meal) =>
@@ -148,11 +122,11 @@ export default function MealsPage() {
                       )
                   )}
                 </StyledList>
+                <Divider />
               </>
             )}
             {mealsList.length > 0 ? (
               <>
-                <h3>All Meals</h3>
                 <StyledList>
                   {mealsList.map(
                     (meal) =>
@@ -174,7 +148,9 @@ export default function MealsPage() {
           </StyledCard>
         </StyledSection>
         <StyledSection id="fullMeal">
-          <StyledCardHeading>Full Meal</StyledCardHeading>
+          <CardHeader>
+            <StyledCardHeading>FULL MEAL</StyledCardHeading>
+          </CardHeader>
           <StyledCard>
             {selectedMeal ? (
               <FullMeal meal={selectedMeal} onLikeButtonClick={likeMeal} />
