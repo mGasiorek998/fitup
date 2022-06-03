@@ -5,7 +5,7 @@
 ### To do
   - new tasks
 
-### In progress
+### In Progress
 
   - Create branch: FU:#task_id-task-name
   - Writing some code
