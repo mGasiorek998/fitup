@@ -68,10 +68,6 @@ const Button = styled.button<ButtonProps>`
   &:hover {
     box-shadow: none;
   }
-
-  &:focus {
-    background-color: red;
-  }
 `;
 
 export default Button;
