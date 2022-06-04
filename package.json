@@ -89,7 +89,7 @@
     "install:backend": "cd backend && npm install",
     "install:husky": "husky install",
     "run:backend": "npm start --prefix backend",
-    "postinstall": "run-p install:*",
+    "postinstall": "run-s install:*",
     "dev": "run-p run:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
