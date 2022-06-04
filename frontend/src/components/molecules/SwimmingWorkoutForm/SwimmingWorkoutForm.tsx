@@ -20,6 +20,7 @@ export default function SwimmingWorkoutForm({
         id="pools"
         name="pools"
         type="number"
+        min={1}
         label="Pools count"
         value={defaultValues?.pools ? `${defaultValues?.pools}` : ''}
         onChange={onFormValuesChange}
@@ -28,6 +29,7 @@ export default function SwimmingWorkoutForm({
         id="restPools"
         name="rest"
         type="number"
+        min={1}
         label="Rest after pools"
         value={defaultValues?.rest ? `${defaultValues?.rest}` : ''}
         onChange={onFormValuesChange}

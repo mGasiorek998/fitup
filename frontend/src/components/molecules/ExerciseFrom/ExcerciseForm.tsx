@@ -23,9 +23,12 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExercise((prevState) => ({
       ...prevState,
-      [event.target.name]: isNaN(+event.target.value)
-        ? event.target.value
-        : +event.target.value,
+      [event.target.name]:
+        event.target.value === ''
+          ? ''
+          : isNaN(+event.target.value)
+          ? event.target.value
+          : +event.target.value,
     }));
   };
 
@@ -40,6 +43,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
       />
       <FormInput
         type="number"
+        min={1}
         id="excerciseSets"
         name="sets"
         label="Sets"
@@ -47,6 +51,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
       />
       <FormInput
         type="number"
+        min={1}
         id="excerciseReps"
         name="reps"
         label="Repetitions"

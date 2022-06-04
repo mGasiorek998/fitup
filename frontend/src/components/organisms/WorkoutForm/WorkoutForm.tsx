@@ -34,7 +34,7 @@ export default function WorkoutForm({
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value: isNaN(+value) ? value : +value,
+        value: value === '' ? '' : isNaN(+value) ? value : +value,
       },
     });
   };

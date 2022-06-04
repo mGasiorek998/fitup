@@ -40,6 +40,7 @@ export default function IngredeintForm({ onSubmit }: IngredeintFormProps) {
       <FormInput
         id="ingredientCount"
         type="number"
+        min={1}
         name="ingredientCount"
         label="How much?"
         value={ingredient.ingredientCount}
@@ -48,6 +49,7 @@ export default function IngredeintForm({ onSubmit }: IngredeintFormProps) {
       <FormInput
         id="ingredientAmount"
         type="number"
+        min={1}
         name="ingredientAmount"
         label="How much (in g)?"
         value={ingredient.ingredientAmount}

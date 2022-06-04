@@ -8,6 +8,7 @@ export default function WellBeingForm({
     <>
       <FormInput
         type="number"
+        min={1}
         id="time"
         name="time"
         label="Time (mins)"
