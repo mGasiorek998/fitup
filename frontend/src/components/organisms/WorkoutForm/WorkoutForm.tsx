@@ -105,7 +105,12 @@ export default function WorkoutForm({
             onFormValuesChange={handleFormValuesChange}
           />
         )}
-        <Button size="medium" type="submit" color="primary">
+        <Button
+          disabled={state.type === 'weightLifting' && !state.exercises?.length}
+          size="medium"
+          type="submit"
+          color="primary"
+        >
           {workoutToEdit ? 'Save' : 'Add'} workout
         </Button>
       </StyledForm>
