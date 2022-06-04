@@ -85,7 +85,7 @@
   },
   "scripts": {
     "install:frontend": "cd frontend && npm install",
-    "run:frontend": "npm start --prefix frontend",
+    "run:frontend": "BROWSER=none npm start --prefix frontend",
     "install:backend": "cd backend && npm install",
     "install:husky": "husky install",
     "run:backend": "npm start --prefix backend",

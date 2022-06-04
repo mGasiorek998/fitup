@@ -1,9 +1,10 @@
 # FITUP
 
 ## Stack
-  - Frontend: React & styled-components
-  - Backend: Nest
-  - Database: MongoDB, Redis
+
+- Frontend: React & styled-components
+- Backend: Nest
+- Database: MongoDB, Redis
 
 ## Installation & Setup
 
@@ -22,6 +23,14 @@
   - brew install mongodb-community
   - brew services start mongodb-community
 
+### Redis for Windows
+
+- https://redis.io/docs/getting-started/installation/install-redis-on-windows/
+
+### Redis for MacOS
+
+- https://redis.io/docs/getting-started/installation/install-redis-on-mac-os/
+
 ### Download Project
 
 - Click on **Code**
@@ -30,12 +39,7 @@
 
 ### Project Setup
 
-- Open **fitup-main** directory in **Visual Studio Code**
-- In Terminal use **npm install** command
-- Go to **frontend** directory and use command **npm install**
-- Go to **backend** directory and use command **npm install**
-- In the **backend** directory use **npm run start:dev**
-- Open a new instance of Terminal
-- Go to **frontend** directory
-- Use **npm start**
-- Preferable browser is **Google Chrome**
+- Install dependencies `npm install`
+- Run application: `npm run dev`
+  - frontend will start at http://localhost:3000/
+  - backend will start at http://localhost:8000/
