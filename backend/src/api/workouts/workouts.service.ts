@@ -7,12 +7,14 @@ import {
 import { Db, InsertOneResult, ObjectId } from 'mongodb';
 import { CreateMealDto } from '../meals/dto/create-meal.dto';
 import { UpdateMealDto } from '../meals/dto/update-meal.dto';
+import { Redis } from 'redis';
 
 @Injectable()
 export class WorkoutsService {
   constructor(
     @Inject('DB_CONNECTION')
-    private db: Db
+    private db: Db,
+    @Inject('REDIS_CLIENT') private readonly redis: Redis
   ) {}
 
   async findAll() {
@@ -20,6 +22,10 @@ export class WorkoutsService {
   }
 
   async findOne(id: string) {
+    const dataInRedis = await this.redis.get(id);
+    if (dataInRedis) {
+      return JSON.parse(dataInRedis);
+    }
     if (!ObjectId.isValid(id)) {
       throw new BadRequestException();
     }
@@ -31,7 +37,7 @@ export class WorkoutsService {
     if (!response) {
       throw new NotFoundException();
     }
-
+    this.redis.set(id, JSON.stringify(response));
     return response;
   }
 
@@ -99,8 +105,8 @@ export class WorkoutsService {
           {
             $project: {
               exercises: '$exercises',
-              volume: {$multiply: ['$exercises.sets', '$exercises.reps']}
-            }
+              volume: { $multiply: ['$exercises.sets', '$exercises.reps'] },
+            },
           },
         ])
         .toArray();
