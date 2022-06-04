@@ -48,7 +48,7 @@ export default function WeightLiftingForm({
       <FormInput
         id="rest"
         name="rest"
-        label="Rest time per exercise"
+        label="Rest time per exercise (in seconds)"
         value={defaultValues?.rest ? `${defaultValues.rest}` : ''}
         onChange={onFormValuesChange}
       />

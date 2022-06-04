@@ -8,6 +8,7 @@ export default function JoggingWorkoutForm({
     <>
       <FormInput
         type="number"
+        min={1}
         id="distance"
         name="distance"
         label="Distance"
@@ -16,6 +17,7 @@ export default function JoggingWorkoutForm({
       />
       <FormInput
         type="number"
+        min={1}
         id="runningTime"
         name="runningTime"
         label="Running time"
@@ -24,6 +26,7 @@ export default function JoggingWorkoutForm({
       />
       <FormInput
         type="number"
+        min={1}
         id="restTime"
         name="rest"
         label="Rest time"

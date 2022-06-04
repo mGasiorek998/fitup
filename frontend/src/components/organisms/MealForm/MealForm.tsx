@@ -58,7 +58,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value: isNaN(+value) ? value : +value,
+        value: value === '' ? '' : isNaN(+value) ? value : +value,
       },
     });
   };
@@ -71,6 +71,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           name="name"
           type="text"
           label="Name"
+          pattern="[a-zA-Z]*"
           required={true}
           value={state.name}
           onChange={handleInputChange}
@@ -87,6 +88,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           id="description"
           name="description"
           type="textarea"
+          pattern="[a-zA-Z]*"
           label="Description"
           required={true}
           value={state.description}
@@ -105,7 +107,7 @@ export default function MealForm({ mealToEdit, onSuccess }: MealFormProps) {
           id="avgCookingTime"
           name="avgCookingTime"
           type="number"
-          label="Average cooking time in mins"
+          label="Average cooking time (in mins)"
           required={true}
           min={1}
           value={`${state.avgCookingTime}`}

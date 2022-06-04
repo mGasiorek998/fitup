@@ -84,8 +84,14 @@
     "wrappy": "^1.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "install:frontend": "cd frontend && npm install",
+    "run:frontend": "npm start --prefix frontend",
+    "install:backend": "cd backend && npm install",
+    "install:husky": "husky install",
+    "run:backend": "npm start --prefix backend",
+    "postinstall": "run-s install:*",
+    "dev": "run-p run:*",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
     "**/*.{tsx, ts, jsx, js}": [
@@ -112,6 +118,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "husky": "^7.0.0",
-    "lint-staged": "^12.4.0"
+    "lint-staged": "^12.4.0",
+    "npm-run-all": "^4.1.5"
   }
 }

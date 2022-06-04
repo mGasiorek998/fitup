@@ -34,7 +34,7 @@ export default function WorkoutForm({
       type: 'HANDLE_INPUT_CHANGE',
       payload: {
         name,
-        value: isNaN(+value) ? value : +value,
+        value: value === '' ? '' : isNaN(+value) ? value : +value,
       },
     });
   };
@@ -50,6 +50,7 @@ export default function WorkoutForm({
         <FormInput
           id="workoutName"
           label="Workout name"
+          pattern="[a-zA-Z]*"
           name="name"
           value={state.name}
           onChange={handleFormValuesChange}
@@ -105,7 +106,12 @@ export default function WorkoutForm({
             onFormValuesChange={handleFormValuesChange}
           />
         )}
-        <Button size="medium" type="submit" color="primary">
+        <Button
+          disabled={state.type === 'weightLifting' && !state.exercises?.length}
+          size="medium"
+          type="submit"
+          color="primary"
+        >
           {workoutToEdit ? 'Save' : 'Add'} workout
         </Button>
       </StyledForm>
