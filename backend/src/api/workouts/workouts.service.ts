@@ -5,9 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Db, InsertOneResult, ObjectId } from 'mongodb';
-import { CreateMealDto } from '../meals/dto/create-meal.dto';
-import { UpdateMealDto } from '../meals/dto/update-meal.dto';
 import { Redis } from 'redis';
+
+import {UpdateWorkoutDto} from "./dto/update-workout.dto";
+import {CreateWorkoutDto} from "./dto/create-workout.dto";
 
 @Injectable()
 export class WorkoutsService {
@@ -41,11 +42,11 @@ export class WorkoutsService {
     return response;
   }
 
-  async createWorkout(body: CreateMealDto): Promise<InsertOneResult<Document>> {
+  async createWorkout(body: CreateWorkoutDto): Promise<InsertOneResult<Document>> {
     return await this.db.collection('workouts').insertOne(body);
   }
 
-  async updateWorkout(id: string, body: UpdateMealDto) {
+  async updateWorkout(id: string, body: UpdateWorkoutDto) {
     if (!ObjectId.isValid(id)) {
       throw new BadRequestException();
     }

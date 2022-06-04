@@ -1,29 +1,8 @@
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { WorkoutTypes, DayOfWeek, Exercise } from './workout.dto';
 
-export type WorkoutTypes =
-  | 'jogging'
-  | 'swimming'
-  | 'weightLifting'
-  | 'wellBeing';
-
-export enum DayOfWeek {
-  Monday = 'Monday',
-  Tuesday = 'Tuesday',
-  Wednesday = 'Wednesday',
-  Thursday = 'Thursday',
-  Friday = 'Friday',
-  Saturday = 'Saturday',
-  Sunday = 'Sunday',
-}
-
-export interface Exercise {
-  name: string;
-  sets: number;
-  reps: number;
-}
-
-export class WorkoutDto {
+export class WorkoutVolumeDto {
   @IsNotEmpty()
   @ApiProperty()
   name: string;
@@ -71,10 +50,14 @@ export class WorkoutDto {
   runningTime?: number;
 
   @IsOptional()
-  @ApiPropertyOptional()
-  exercises?: Exercise[];
+  @ApiProperty()
+  exercises: Exercise[];
 
   @IsOptional()
   @ApiPropertyOptional()
   wellBeingType?: string;
+
+  @IsOptional()
+  @ApiProperty()
+  volume: number;
 }
