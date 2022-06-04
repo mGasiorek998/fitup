@@ -87,11 +87,11 @@
     "install:frontend": "cd frontend && npm install",
     "run:frontend": "npm start --prefix frontend",
     "install:backend": "cd backend && npm install",
+    "install:husky": "husky install",
     "run:backend": "npm start --prefix backend",
     "postinstall": "run-p install:*",
     "dev": "run-p run:*",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
     "**/*.{tsx, ts, jsx, js}": [
