@@ -66,6 +66,8 @@ export class WorkoutsService {
       throw new BadRequestException();
     }
 
+    await this.redis.del(id)
+
     const response = await this.db.collection('workouts').deleteOne({
       _id: new ObjectId(id),
     });
