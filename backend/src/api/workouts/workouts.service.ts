@@ -51,7 +51,7 @@ export class WorkoutsService {
       throw new BadRequestException();
     }
 
-    return await this.db.collection('workouts').updateOne(
+    const response = await this.db.collection('workouts').updateOne(
       { _id: new ObjectId(id) },
       {
         $set: {
@@ -59,14 +59,17 @@ export class WorkoutsService {
         },
       }
     );
+
+    const redisData = { _id: new ObjectId(id), ...body }
+    this.redis.set(id, JSON.stringify(redisData))
+
+    return response;
   }
 
   async removeWorkout(id: string): Promise<void> {
     if (!ObjectId.isValid(id)) {
       throw new BadRequestException();
     }
-
-    await this.redis.del(id)
 
     const response = await this.db.collection('workouts').deleteOne({
       _id: new ObjectId(id),
@@ -75,6 +78,8 @@ export class WorkoutsService {
     if (response.deletedCount === 0) {
       throw new NotFoundException();
     }
+
+    await this.redis.del(id)
   }
 
   async getWorkoutsByDay(selectedDay: string) {
