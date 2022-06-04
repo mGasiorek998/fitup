@@ -34,6 +34,7 @@ export default function IngredeintForm({ onSubmit }: IngredeintFormProps) {
         type="text"
         name="ingredientName"
         label="name"
+        pattern="[a-zA-Z]*"
         value={ingredient.ingredientName}
         onChange={handleInputChange}
       />
@@ -51,7 +52,7 @@ export default function IngredeintForm({ onSubmit }: IngredeintFormProps) {
         type="number"
         min={1}
         name="ingredientAmount"
-        label="How much (in g)?"
+        label="Weight (in g)?"
         value={ingredient.ingredientAmount}
         onChange={handleInputChange}
       />

@@ -37,6 +37,7 @@ export default function ExcerciseForm({ onSumbit }: ExcerciseFormProps) {
       <FormInput
         type="text"
         id="excerciseName"
+        pattern="[a-zA-Z]*"
         name="name"
         label="Name"
         onChange={handleInputChange}

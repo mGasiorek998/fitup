@@ -50,6 +50,7 @@ export default function WorkoutForm({
         <FormInput
           id="workoutName"
           label="Workout name"
+          pattern="[a-zA-Z]*"
           name="name"
           value={state.name}
           onChange={handleFormValuesChange}
