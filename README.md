@@ -40,6 +40,6 @@
 ### Project Setup
 
 - Install dependencies `npm install`
-- Run application: `npm run dev`
+- Run application: (in backend directory) `npm run start:dev`, (in frontend directory) `npm start`
   - frontend will start at http://localhost:3000/
   - backend will start at http://localhost:8000/
